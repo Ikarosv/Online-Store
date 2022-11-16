@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import '../assets/styles/ProductCard.css';
 import {
+  addCartItem,
   decreaseQuantity,
   increaseQuantity,
   removeProduct,
@@ -16,9 +17,11 @@ export default class ProductCard extends Component {
         <Link
           data-testid="product-detail-link"
           to={ `/productdetails/${id}` }
-          className="product-card"
         >
-          <div data-testid="product">
+          <div
+            data-testid="product"
+            className="product-card"
+          >
             <h4 data-testid="shopping-cart-product-name">{ title }</h4>
             <img src={ thumbnail } alt={ title } />
             <h4>{ `R$ ${price}` }</h4>
@@ -66,6 +69,13 @@ export default class ProductCard extends Component {
             </section>
           )
         }
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+          onClick={ () => addCartItem(this.props) }
+        >
+          Adicionar ao carrinho
+        </button>
       </section>
     );
   }

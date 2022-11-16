@@ -21,14 +21,16 @@ export default class AsideCategory extends Component {
     return (
       <aside className="categories">
         <h3>Categorias</h3>
-        {guardCategories.map(({ name, id }) => (
-          <AsideCart
-            key={ id }
-            name={ name }
-            id={ id }
-            handleChange={ handleChange }
-          />
-        ))}
+        <section>
+          {guardCategories.map(({ name, id }) => (
+            <AsideCart
+              key={ id }
+              name={ name }
+              id={ id }
+              handleChange={ handleChange }
+            />
+          ))}
+        </section>
       </aside>
     );
   }

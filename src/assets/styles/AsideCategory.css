@@ -1,4 +1,14 @@
 .categories {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: calc(100vh - 110px);
   min-width: 310px;
+  overflow-y: scroll;
+  padding: 35px 40px;
+  padding-bottom: 0;
+  position: sticky;
+  top: 0;
   width: 310px;
 }
