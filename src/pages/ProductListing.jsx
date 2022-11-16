@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import AsideCategory from '../components/AsideCategory';
-import { CartSvg } from '../assets/ExportImages';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import '../assets/styles/Header.css';
+import Header from '../components/Header';
 
 export default class ProductListing extends Component {
   state = {
@@ -62,32 +61,12 @@ export default class ProductListing extends Component {
 
     return (
       <main>
-        <header className="Header">
-          <form className="search-form" onSubmit={ this.search }>
-            <input
-              className="search-form-input"
-              type="text"
-              data-testid="query-input"
-              onChange={ this.productSearch }
-              value={ searchValue }
-              placeholder="Digite o que você busca"
-            />
-            <button
-              className="search-form-button"
-              data-testid="query-button"
-              type="button"
-              onClick={ this.search }
-            >
-              Buscar
-            </button>
-          </form>
-          <Link
-            to="/cart"
-            data-testid="shopping-cart-button"
-          >
-            <CartSvg stroke="blue" />
-          </Link>
-        </header>
+        <Header
+          searchValue={ searchValue }
+          searchFunction={ this.search }
+          handleSearch={ this.productSearch }
+        />
+
         <main className="flex-row">
           <AsideCategory handleChange={ this.handleChange } />
           <section className="flex-row flex-wrap">
