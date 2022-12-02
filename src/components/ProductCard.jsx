@@ -11,7 +11,10 @@ import {
 
 export default class ProductCard extends Component {
   render() {
-    const { title, price, thumbnail, id, quantity, updateCart } = this.props;
+    const {
+      title, price, thumbnail,
+      id, quantity, updateCart,
+      updateCartSize } = this.props;
     return (
       <section>
         <Link
@@ -72,7 +75,7 @@ export default class ProductCard extends Component {
         <button
           type="button"
           data-testid="product-add-to-cart"
-          onClick={ () => addCartItem(this.props) }
+          onClick={ () => addCartItem(this.props, updateCartSize) }
         >
           Adicionar ao carrinho
         </button>
@@ -85,4 +88,5 @@ ProductCard.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
   price: PropTypes.number,
+  updateCart: PropTypes.func,
 }.isRequired;

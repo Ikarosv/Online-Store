@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import DetailsCart from '../components/DetailsCart';
 import { BackSvg } from '../assets/ExportImages';
 import { getProductById } from '../services/api';
-import { addCartItem } from '../services/cartManipulation';
+import { addCartItem, getCartTotalQuantity } from '../services/cartManipulation';
+import Header from '../components/Header';
 
 const MAX_NUMBER = 5;
 
@@ -16,6 +17,7 @@ export default class ProductDetails extends Component {
     erro: true,
     text: '',
     comments: [],
+    cartSize: 0,
   };
 
   async componentDidMount() {
@@ -29,20 +31,28 @@ export default class ProductDetails extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { comments, email, rating, text, guardProducts } = this.state;
+    const { comments, email, rating, text, guardProducts, cartSize } = this.state;
     const changeEmail = email !== nextState.email;
     const changeRating = rating !== nextState.rating;
     const changeText = text !== nextState.text;
     const changeComments = comments.length !== nextState.comments.length;
     const hasId = guardProducts.id !== nextState.guardProducts.id;
-    return hasId || changeEmail || changeRating || changeText || changeComments;
+    const changeCartSize = cartSize !== nextState.cartSize;
+    return hasId || changeEmail || changeRating
+    || changeText || changeComments || changeCartSize;
   }
 
   componentDidUpdate() {
     this.setState({
       comments: this.getProductEvaluation(),
     });
+    this.updateCartSize();
   }
+
+  updateCartSize = () => {
+    const cartSize = getCartTotalQuantity();
+    this.setState({ cartSize });
+  };
 
   isFormValid = () => {
     const { email, rating } = this.state;
@@ -123,19 +133,27 @@ export default class ProductDetails extends Component {
     return radios;
   };
 
+  search = async (event) => {
+    event.preventDefault();
+  };
+
   render() {
-    const { guardProducts, erro, email, text, comments } = this.state;
+    const { guardProducts, erro, email, text, comments, cartSize } = this.state;
     const radios = this.generateRadios();
 
     return (
       <div>
-        <Link
+        <Header
+          search={ this.search }
+          cartSize={ cartSize }
+        />
+        {/* <Link
           data-testid="shopping-cart-button"
           to="/cart"
         >
           <BackSvg />
           Carrinho de compras
-        </Link>
+        </Link> */}
         <h1>Descrição do Produto</h1>
         <DetailsCart
           { ...guardProducts }

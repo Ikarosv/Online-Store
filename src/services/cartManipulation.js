@@ -5,7 +5,7 @@ export const getCartFromLocal = () => {
   return JSON.parse(localStorage.getItem('cartItems'));
 };
 
-export const addCartItem = (item) => {
+export const addCartItem = (item, callback = () => {}) => {
   const savedCartItems = getCartFromLocal();
   const index = savedCartItems.findIndex((product) => product.id === item.id);
   if (index >= 0) {
@@ -14,6 +14,7 @@ export const addCartItem = (item) => {
     savedCartItems.push({ ...item, quantity: 1 });
   }
   localStorage.setItem('cartItems', JSON.stringify(savedCartItems));
+  callback();
 };
 
 export const increaseQuantity = (item) => {
@@ -40,4 +41,9 @@ export const removeProduct = (item) => {
 
 export const clearCart = () => {
   localStorage.setItem('cartItems', '[]');
+};
+
+export const getCartTotalQuantity = () => {
+  const localCart = getCartFromLocal();
+  return localCart.reduce((acc, curr) => acc + curr.quantity, 0);
 };

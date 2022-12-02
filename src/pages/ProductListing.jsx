@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import AsideCategory from '../components/AsideCategory';
-import { CartSvg } from '../assets/ExportImages';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import '../assets/styles/Header.css';
+import Header from '../components/Header';
+import { getCartTotalQuantity } from '../services/cartManipulation';
 
 export default class ProductListing extends Component {
   state = {
     productList: [],
-    searchValue: '',
     searched: false,
     cartegorySelected: '',
+    cartSize: 0,
   };
 
-  productSearch = ({ target }) => {
-    const { value } = target;
-    this.setState(({
-      searchValue: value,
-    }));
-  };
+  componentDidMount() {
+    this.updateCartSize();
+  }
 
-  search = async (event) => {
+  search = async (event, searchValue) => {
     event.preventDefault();
-    const { searchValue } = this.state;
+    if (searchValue.length === 0) {
+      this.setState(({
+        productList: [],
+        searched: true,
+      }));
+      return;
+    }
     const produtos = await getProductsFromCategoryAndQuery(null, searchValue);
 
     this.setState(({
       productList: produtos.results,
-      searchValue: '',
       searched: true,
     }));
   };
@@ -47,13 +49,19 @@ export default class ProductListing extends Component {
     });
   };
 
+  updateCartSize = () => {
+    const cartSize = getCartTotalQuantity();
+    this.setState({ cartSize });
+  };
+
   render() {
-    const { productList, searchValue, searched } = this.state;
+    const { productList, searched, cartSize } = this.state;
 
     let productsResults = productList.map((productInfos) => (
       <section key={ productInfos.id }>
         <ProductCard
           { ...productInfos }
+          updateCartSize={ this.updateCartSize }
         />
       </section>
     ));
@@ -62,32 +70,10 @@ export default class ProductListing extends Component {
 
     return (
       <main>
-        <header className="Header">
-          <form className="search-form" onSubmit={ this.search }>
-            <input
-              className="search-form-input"
-              type="text"
-              data-testid="query-input"
-              onChange={ this.productSearch }
-              value={ searchValue }
-              placeholder="Digite o que você busca"
-            />
-            <button
-              className="search-form-button"
-              data-testid="query-button"
-              type="button"
-              onClick={ this.search }
-            >
-              Buscar
-            </button>
-          </form>
-          <Link
-            to="/cart"
-            data-testid="shopping-cart-button"
-          >
-            <CartSvg stroke="blue" />
-          </Link>
-        </header>
+        <Header
+          search={ this.search }
+          cartSize={ cartSize }
+        />
         <main className="flex-row">
           <AsideCategory handleChange={ this.handleChange } />
           <section className="flex-row flex-wrap">
