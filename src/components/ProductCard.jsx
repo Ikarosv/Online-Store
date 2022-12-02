@@ -14,13 +14,17 @@ export default class ProductCard extends Component {
     const {
       title, price, thumbnail,
       id, quantity, updateCart,
-      updateCartSize, available_quantity: availableQuantity } = this.props;
+      updateCartSize, available_quantity: availableQuantity,
+      shipping: { free_shipping: freeShipping } } = this.props;
     return (
       <section>
         <Link
           data-testid="product-detail-link"
           to={ `/productdetails/${id}` }
         >
+          {
+            freeShipping && <span data-testid="free-shipping">Frete Grátis</span>
+          }
           <div
             data-testid="product"
             className="product-card"
