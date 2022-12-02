@@ -14,7 +14,7 @@ export default class ProductCard extends Component {
     const {
       title, price, thumbnail,
       id, quantity, updateCart,
-      updateCartSize } = this.props;
+      updateCartSize, available_quantity: availableQuantity } = this.props;
     return (
       <section>
         <Link
@@ -66,6 +66,7 @@ export default class ProductCard extends Component {
                   increaseQuantity(this.props);
                   updateCart();
                 } }
+                disabled={ quantity >= availableQuantity }
               >
                 +
               </button>
