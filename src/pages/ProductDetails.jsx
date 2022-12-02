@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import DetailsCart from '../components/DetailsCart';
-import { BackSvg } from '../assets/ExportImages';
 import { getProductById } from '../services/api';
 import { addCartItem, getCartTotalQuantity } from '../services/cartManipulation';
 import Header from '../components/Header';
